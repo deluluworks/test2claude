@@ -1,4 +1,88 @@
+import { useRef, useEffect } from 'react'
 import './App.css'
+
+const carouselRow1 = [
+  { bg: 'linear-gradient(135deg, #8B6914 0%, #3d2e0a 100%)', nav: ['Network', 'Manifesto', 'Principles', 'Insights'], title: '', overlay: true },
+  { bg: 'linear-gradient(135deg, #1a1a2e 0%, #0f0f1a 100%)', nav: ['Portfolio', 'Team', 'Network', 'Manifesto', 'Principles', 'Insights'], title: 'The next era of intelligence is being built. We map it. We back what\'s next.', overlay: true },
+  { bg: '#f5f0e8', nav: [], title: '', dark: true, brand: 'i-D' },
+  { bg: 'linear-gradient(135deg, #2d8a4e 0%, #1a5c30 100%)', nav: [], title: 'Chase the Match', brand: 'Tripadvisor' },
+  { bg: 'linear-gradient(135deg, #4ecdc4 0%, #2d9a8f 100%)', nav: ['Product', 'Solutions', 'Security', 'Customers', 'Company'], title: 'ORO turns your data into digital gold', brand: 'ORO' },
+  { bg: 'linear-gradient(135deg, #3a1c71 0%, #d76d77 50%, #ffaf7b 100%)', nav: [], title: 'We build', brand: '' },
+]
+
+const carouselRow2 = [
+  { bg: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)', nav: [], title: 'Creative Design Studio', brand: '' },
+  { bg: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)', nav: ['Home', 'About', 'Work', 'Contact'], title: 'We create digital experiences', brand: '' },
+  { bg: '#1a1a1a', nav: ['Product', 'Solutions', 'Security', 'Customers', 'Company'], title: '', brand: 'LEGORA', overlay: true },
+  { bg: 'linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%)', nav: [], title: 'Reimagine Everything', brand: '' },
+  { bg: 'linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%)', nav: ['Services', 'Portfolio', 'About'], title: '', dark: true, brand: '' },
+  { bg: 'linear-gradient(135deg, #0c3483 0%, #a2b6df 100%)', nav: [], title: 'Build the Future', brand: '' },
+]
+
+const logos = [
+  'Dribbble', 'LEGORA', 'zapier', 'perplexity',
+  'Cal.com', 'mixpanel', 'miro', 'DOORDASH',
+]
+
+function CarouselCard({ card }) {
+  return (
+    <div className="carousel-card" style={{ background: card.bg }}>
+      {card.nav.length > 0 && (
+        <div className={`card-nav ${card.dark ? 'dark' : ''}`}>
+          {card.nav.map((item, i) => <span key={i}>{item}</span>)}
+          {card.brand && <span className="card-brand-nav">{card.brand}</span>}
+        </div>
+      )}
+      {card.brand && card.nav.length === 0 && (
+        <div className={`card-brand ${card.dark ? 'dark' : ''}`}>{card.brand}</div>
+      )}
+      {card.title && (
+        <div className={`card-title ${card.dark ? 'dark' : ''}`}>{card.title}</div>
+      )}
+      {card.overlay && <div className="card-overlay" />}
+    </div>
+  )
+}
+
+function InfiniteCarousel({ items, direction = 'left', speed = 40 }) {
+  const trackRef = useRef(null)
+
+  useEffect(() => {
+    const track = trackRef.current
+    if (!track) return
+    let animationId
+    let position = 0
+    const totalWidth = track.scrollWidth / 2
+
+    const animate = () => {
+      if (direction === 'left') {
+        position -= speed / 60
+        if (position <= -totalWidth) position += totalWidth
+      } else {
+        position += speed / 60
+        if (position >= 0) position -= totalWidth
+      }
+      track.style.transform = `translateX(${position}px)`
+      animationId = requestAnimationFrame(animate)
+    }
+
+    if (direction === 'right') {
+      position = -totalWidth
+    }
+
+    animationId = requestAnimationFrame(animate)
+    return () => cancelAnimationFrame(animationId)
+  }, [direction, speed])
+
+  return (
+    <div className="carousel-wrapper">
+      <div className="carousel-track" ref={trackRef}>
+        {items.map((card, i) => <CarouselCard key={i} card={card} />)}
+        {items.map((card, i) => <CarouselCard key={`dup-${i}`} card={card} />)}
+      </div>
+    </div>
+  )
+}
 
 function App() {
   return (
@@ -181,6 +265,24 @@ function App() {
               </div>
             </div>
           </div>
+        </div>
+      </section>
+
+      <section className="shipped-section">
+        <div className="shipped-header">
+          <h2 className="shipped-title">Shipped with Framer</h2>
+          <a href="#" className="btn-see-sites">See Framer sites</a>
+        </div>
+
+        <div className="carousels">
+          <InfiniteCarousel items={carouselRow1} direction="left" speed={30} />
+          <InfiniteCarousel items={carouselRow2} direction="right" speed={30} />
+        </div>
+
+        <div className="logos-grid">
+          {logos.map((name, i) => (
+            <div key={i} className="logo-item">{name}</div>
+          ))}
         </div>
       </section>
     </>
