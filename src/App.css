@@ -566,7 +566,6 @@
 /* Shipped Section */
 .shipped-section {
   padding: 100px 0 80px;
-  overflow: hidden;
 }
 
 .shipped-header {
@@ -609,7 +608,10 @@
 
 .carousel-wrapper {
   overflow: hidden;
-  width: 100%;
+  width: calc(100% - 96px);
+  max-width: 1200px;
+  margin: 0 auto;
+  border-radius: 12px;
 }
 
 .carousel-track {
@@ -723,6 +725,10 @@
     gap: 16px;
   }
 
+  .carousel-wrapper {
+    width: calc(100% - 40px);
+  }
+
   .carousel-card {
     width: 260px;
     height: 200px;
@@ -742,6 +748,10 @@
 @media (min-width: 769px) and (max-width: 1024px) {
   .shipped-header {
     padding: 0 32px 40px;
+  }
+
+  .carousel-wrapper {
+    width: calc(100% - 64px);
   }
 
   .carousel-card {
