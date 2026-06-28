@@ -5,14 +5,14 @@
 }
 
 html {
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: 'Newsreader', Georgia, serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 body {
-  background: #000;
-  color: #fff;
+  background: #EFEBE0;
+  color: #16150F;
   min-height: 100vh;
 }
 
